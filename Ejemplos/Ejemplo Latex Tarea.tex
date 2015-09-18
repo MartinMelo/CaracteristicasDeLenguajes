@@ -1,0 +1,56 @@
+\documentclass[a4paper,10pt]{article} % a4paper es obvio y 10pt es el tamaño
+                                      % de la tipografía básica
+\usepackage[utf8]{inputenc} % Permite escribir acentos (leer este archivo en 
+                            % UTF8!)
+\usepackage[T1]{fontenc}    % Permite que el texto que se produce se pueda
+                            % copiar (incluídos los símbolos)
+\usepackage[spanish]{babel} % Hace que las palabras claves (como la fecha)
+                            % salgan en español
+\usepackage{fullpage}       % Pone márgenes más chicos que los estándares
+
+\setlength\parindent{0em}   % Elimina la identación
+
+\usepackage{amsmath}        % Provee el entorno align*
+
+\newcommand\fun{\textsf{fun}~}  % Una especie de macro para usar \fun
+\newcommand\fix{\textsf{fix}~}
+\newcommand\ifZ{\textsf{ifZ}~}
+\newcommand\Then{~\textsf{then}~} % Uso mayúsculas para then y else porque en
+\newcommand\Else{~\textsf{else}~} % minúsculas son palabras claves de LaTeX
+
+
+\title{Ejemplo de \LaTeX\ para las tareas}
+\author{Alejandro Díaz-Caro (a.k.a.~Jano)}
+\date{\today}  % En vez de \today pueden poner el texto que quieran
+
+
+\begin{document}
+\maketitle   % Pone el título autor y fecha definidos antes
+
+\[
+  \textsl{Fact} = \fix f.\fun n.\ifZ n \Then 1 \Else n*(f\ (n-1))
+\]
+
+
+\begin{align*}
+  \textsl{Fact}~2
+  & = (\fix f.\fun n.\ifZ n \Then 1 \Else n*(f\ (n-1)))~2\\
+  & \to (\fun n.\ifZ n\Then 1\Else n*(\textsl{Fact}\ (n-1)))~2\\
+  & \to \ifZ 2\Then 1\Else 2*(\textsl{Fact}\ (2-1))\\
+  & \to \ifZ 2\Then 1\Else 2*(\textsl{Fact}\ 1)\\
+  & \to 2*(\textsl{Fact}\ 1)\\
+  & \to 2*((\fix f.\fun n.\ifZ n \Then 1 \Else n*(f\ (n-1)))\ 1)\\
+  & \to 2*((\fun n.\ifZ n \Then 1 \Else n*(\textsl{Fact}\ (n-1)))\ 1)\\
+  & \to 2*(\ifZ 1 \Then 1 \Else 1*(\textsl{Fact}\ (1-1)))\\
+  & \to 2*(\ifZ 1 \Then 1 \Else 1*(\textsl{Fact}\ 0))\\
+  & \to 2*(1*(\textsl{Fact}\ 0))\\
+  & \to 2*(1*((\fix f.\fun n.\ifZ n \Then 1 \Else n*(f\ (n-1)))\ 0))\\
+  & \to 2*(1*((\fun n.\ifZ n \Then 1 \Else n*(\textsl{Fact}\ (n-1)))\ 0))\\
+  & \to 2*(1*(\ifZ 0 \Then 1 \Else 0*(\textsl{Fact}\ (0-1))))\\
+  & \to 2*(1*1)\\
+  & \to 2*1\\
+  & \to\fbox{2}\\
+\end{align*}
+\end{document}
+
+

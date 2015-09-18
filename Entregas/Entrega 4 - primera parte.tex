@@ -1,0 +1,108 @@
+\documentclass[a4paper,10pt]{article} % a4paper es obvio y 10pt es el tamaño
+                                      % de la tipografía básica
+\usepackage[utf8]{inputenc} % Permite escribir acentos (leer este archivo en 
+                            % UTF8!)
+\usepackage[T1]{fontenc}    % Permite que el texto que se produce se pueda
+                            % copiar (incluídos los símbolos)
+\usepackage[spanish]{babel} % Hace que las palabras claves (como la fecha)
+                            % salgan en español
+\usepackage{fullpage}       % Pone márgenes más chicos que los estándares
+
+\setlength\parindent{0em}   % Elimina la identación
+
+\usepackage{amsmath,amssymb,graphicx}        
+
+\usepackage{proof}        % Para escribir el infer y hacer la linea para la definicion inductiva*
+
+\newcommand\fun{\textsf{fun}~}  % Una especie de macro para usar \fun
+\newcommand\fix{\textsf{fix}~}
+\newcommand\Let{\textsf{Let}~}
+\newcommand\In{\textsf{in}~}
+\newcommand\ifZ{\textsf{ifZ}~}
+\newcommand\Nat{\textsf{Nat}~}
+\newcommand\CL{\textsf{CL}~}
+\newcommand\CR{\textsf{CR}~}
+\newcommand\Node{\textsf{Node}~}
+\newcommand\Leaf{\textsf{Leaf}~}
+\newcommand\Tree{\textsf{Tree}~}
+\newcommand\NoLeaf{\textsf{NoLeaf}~}
+\newcommand\ifLeaf{\textsf{ifLeaf}~}
+\newcommand\Then{~\textsf{then}~} % Uso mayúsculas para then y else porque en
+\newcommand\Else{~\textsf{else}~} % minúsculas son palabras claves de LaTeX
+
+
+\title{Entrega 4 - Primera Parte}
+\author{Martin Alejandro Melo}
+\date{\today}
+
+
+\begin{document}
+\maketitle  
+	
+	
+	\textbf{Derivar tipo con Hindley y Robinson a: Node ((fun x.leaf x) (fun y.y)).}
+	\vspace{5mm}
+	
+	\infer{\Gamma \vdash \Node ((\fun x.\Leaf x) (\fun y.y)) \leadsto C, \{B\Rightarrow \Tree B = (A\Rightarrow A)\Rightarrow X , X= \Tree C \} }
+		{	
+			\infer{\Gamma \vdash (\fun x.\Leaf x) (\fun y.y)\leadsto X, \{B\Rightarrow \Tree B = (A\Rightarrow A)\Rightarrow X\}}
+			{
+			 \infer{\Gamma \vdash \fun x.\Leaf x \leadsto B \Rightarrow \Tree B, \emptyset}
+				{
+					\infer{x:B\vdash x \leadsto B, \emptyset}{}
+				}
+				& 
+				\infer{\Gamma \vdash \fun y.y \leadsto A\Rightarrow A, \emptyset}
+				{
+					\infer{y:A\vdash y \leadsto A, \emptyset}{}
+				}
+			}	
+		}
+		\vspace{5mm}
+		
+		\textbf{Robinson}
+		
+		 
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ B\Rightarrow \Tree B = (A\Rightarrow A)\Rightarrow X $ }\\
+					\mbox{X= \Tree C}
+				\end{array}
+		\right. \] 		
+		$ \Rightarrow	(1)$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ B = (A\Rightarrow A) $ }\\
+					\mbox{ $ \Tree B = X $ }\\
+					\mbox{X= \Tree C}
+				\end{array}
+		\right. \]
+		$ \Rightarrow	(1)$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ B = (A\Rightarrow A) $ }\\
+					\mbox{ $ \Tree B = \Tree B $ }\\
+					\mbox{ $ \Tree B = \Tree C $}
+				\end{array}
+		\right. \]
+		$ \Rightarrow	(4)$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ B = (A\Rightarrow A) $ }\\
+					\mbox{ $ \Tree B = \Tree C $}\\
+					\mbox{ $ B = C $}
+				\end{array}
+		\right. \]
+		$ \Rightarrow	(1)$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ (A\Rightarrow A) = (A\Rightarrow A) $ }\\
+					\mbox{ $ \Tree (A\Rightarrow A) = \Tree C $}\\
+					\mbox{ $ (A\Rightarrow A) = C $}
+				\end{array}
+		\right. \]
+		
+		$ S = [(A\Rightarrow A)/C] $ \\
+		El tipo es: $ (A\Rightarrow A) $
+		
+	\end{document}

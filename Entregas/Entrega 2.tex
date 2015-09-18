@@ -1,0 +1,78 @@
+\documentclass[a4paper,10pt]{article} % a4paper es obvio y 10pt es el tamaño
+                                      % de la tipografía básica
+\usepackage[utf8]{inputenc} % Permite escribir acentos (leer este archivo en 
+                            % UTF8!)
+\usepackage[T1]{fontenc}    % Permite que el texto que se produce se pueda
+                            % copiar (incluídos los símbolos)
+\usepackage[spanish]{babel} % Hace que las palabras claves (como la fecha)
+                            % salgan en español
+\usepackage{fullpage}       % Pone márgenes más chicos que los estándares
+
+\setlength\parindent{0em}   % Elimina la identación
+
+\usepackage{amsmath}        % Provee el entorno align*
+
+\usepackage{proof}        % Para escribir el infer y hacer la linea para la definicion inductiva*
+
+\newcommand\fun{\textsf{fun}~}  % Una especie de macro para usar \fun
+\newcommand\fix{\textsf{fix}~}
+\newcommand\ifZ{\textsf{ifZ}~}
+\newcommand\Nat{\textsf{Nat}~}
+\newcommand\CL{\textsf{CL}~}
+\newcommand\CR{\textsf{CR}~}
+\newcommand\Node{\textsf{Node}~}
+\newcommand\Leaf{\textsf{Leaf}~}
+\newcommand\Tree{\textsf{Tree}~}
+\newcommand\ifLeaf{\textsf{ifLeaf}~}
+\newcommand\Then{~\textsf{then}~} % Uso mayúsculas para then y else porque en
+\newcommand\Else{~\textsf{else}~} % minúsculas son palabras claves de LaTeX
+
+
+\title{Entrega 2}
+\author{Martin Alejandro Melo}
+\date{\today}
+
+
+\begin{document}
+\maketitle   % Pone el título autor y fecha definidos antes
+
+	\textsl{Extender PCF para disponer de Arboles Binarios} \\
+
+	\textbf{Sintaxis de Tipos: } \\
+	
+	  $ A = \Nat | A\Rightarrow A | A\wedge A | Tree~A $ \\
+	
+	\textbf{Sintaxis de terminos:  } \\
+	 
+	$ t = ... | Leaf~t | Tree~t~t~t | ifLeaf~t\Then t\Else t | CL~t | CR~t | Node~t $ \\
+	
+	\textbf{Semantica Operacional:} \\
+	
+	$ \CL \Tree t~u~v\rightarrow u $  \\
+	$ \CR \Tree t~u~v\rightarrow v $  \\
+	$ \ifLeaf \Tree t~u~v\Then u\Else v\rightarrow v $  \\
+	$ \ifLeaf \Leaf t\Then u\Else v\rightarrow u $  \\
+	$ \Node \Tree t~u~v\rightarrow t $  \\
+	$ \Node \Leaf t\rightarrow t $  \\
+	
+	
+	\textbf{Relacion definida inductivamente:} \\
+	
+	\infer{\Gamma \vdash \Leaf t: A \Rightarrow \Leaf A}{\Gamma \vdash t : A}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \CL \Tree u~v~t: \Tree A \Rightarrow \Tree A}{\Gamma \vdash u : \Tree A}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \CR \Tree u~v~t: \Tree A \Rightarrow \Tree A}{\Gamma \vdash v : \Tree A}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \Node \Tree u~v~t: \Tree A \Rightarrow A}{\Gamma \vdash t : A}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \Node \Leaf t: \Leaf A \Rightarrow A}{\Gamma \vdash t : A}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \Tree u~v~t: \Tree A \Rightarrow \Tree A \Rightarrow A \Rightarrow\Tree A }
+				{ \Gamma \vdash u : \Tree A 
+				& \Gamma \vdash v : \Tree A
+				& \Gamma \vdash t : A
+				}
+\end{document}
+
+

@@ -1,0 +1,62 @@
+\documentclass[a4paper,10pt]{article} % a4paper es obvio y 10pt es el tamaño
+                                      % de la tipografía básica
+\usepackage[utf8]{inputenc} % Permite escribir acentos (leer este archivo en 
+                            % UTF8!)
+\usepackage[T1]{fontenc}    % Permite que el texto que se produce se pueda
+                            % copiar (incluídos los símbolos)
+\usepackage[spanish]{babel} % Hace que las palabras claves (como la fecha)
+                            % salgan en español
+\usepackage{fullpage}       % Pone márgenes más chicos que los estándares
+
+\setlength\parindent{0em}   % Elimina la identación
+
+\usepackage{amsmath,amssymb,graphicx}        
+
+\usepackage{proof}        % Para escribir el infer y hacer la linea para la definicion inductiva*
+
+\newcommand\fun{\textsf{fun}~}  % Una especie de macro para usar \fun
+\newcommand\fix{\textsf{fix}~}
+\newcommand\ifZ{\textsf{ifZ}~}
+\newcommand\Nat{\textsf{Nat}~}
+\newcommand\CL{\textsf{CL}~}
+\newcommand\CR{\textsf{CR}~}
+\newcommand\Node{\textsf{Node}~}
+\newcommand\Leaf{\textsf{Leaf}~}
+\newcommand\Tree{\textsf{Tree}~}
+\newcommand\NoLeaf{\textsf{NoLeaf}~}
+\newcommand\ifLeaf{\textsf{ifLeaf}~}
+\newcommand\Then{~\textsf{then}~} % Uso mayúsculas para then y else porque en
+\newcommand\Else{~\textsf{else}~} % minúsculas son palabras claves de LaTeX
+
+
+\title{Entrega 3}
+\author{Martin Alejandro Melo}
+\date{\today}
+
+
+\begin{document}
+\maketitle   % Pone el título autor y fecha definidos antes
+
+	\textsl{Extender Algoritmo de Hindley y Robinson para Arboles Binarios y derivar el tipo para el siguiente termino:} \\
+	
+	
+	\text{\CL ( (\fun x.x) (\Leaf 2))} \\
+	
+	
+	\textbf{Para Hindley:} \\
+	
+	
+	\infer{\Gamma \vdash \Leaf t \leadsto A \rightarrow \Tree A,\phi  }{\Gamma \vdash t \leadsto A,\phi }
+	\vspace{5mm}
+	\infer{\Gamma \vdash \CL t \leadsto Tree A \rightarrow \Tree A,\Theta  }{\Gamma \vdash t \leadsto \NoLeaf A,\Theta }
+	\vspace{5mm}
+	\infer{\Gamma \vdash \CR t \leadsto Tree A \rightarrow \Tree A,\Theta  }{\Gamma \vdash t \leadsto \NoLeaf A,\Theta }
+	\vspace{5mm}
+
+	
+	\textbf{Para Robinson:} \\
+	(1) Cada vez que aparece Tree A => NoLeaf A, Dar error. \\
+	(2) Cada vez que aparece NoLeaf A, Se puede reemplazar por Tree A. \\
+	\end{document}
+
+
