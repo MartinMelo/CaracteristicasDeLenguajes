@@ -1,0 +1,116 @@
+\documentclass[10pt]{article} % a4paper es obvio y 10pt es el tamaño
+                                      % de la tipografía básica
+\usepackage[paperwidth=10in, paperheight=8.5in]{geometry}
+\usepackage[utf8]{inputenc} % Permite escribir acentos (leer este archivo en 
+                            % UTF8!)
+\usepackage[T1]{fontenc}    % Permite que el texto que se produce se pueda
+                            % copiar (incluídos los símbolos)
+\usepackage[spanish]{babel} % Hace que las palabras claves (como la fecha)
+                            % salgan en español
+\usepackage{fullpage}       % Pone márgenes más chicos que los estándares
+
+\setlength\parindent{0em}   % Elimina la identación
+
+\usepackage{amsmath,amssymb,graphicx}        
+
+\usepackage{proof}        % Para escribir el infer y hacer la linea para la definicion inductiva*
+
+\newcommand\fun{\textsf{fun}~}  % Una especie de macro para usar \fun
+\newcommand\fix{\textsf{fix}~}
+\newcommand\Let{\textsf{Let}~}
+\newcommand\In{\textsf{in}~}
+\newcommand\ifZ{\textsf{ifZ}~}
+\newcommand\Nat{\textsf{Nat}~}
+\newcommand\CL{\textsf{CL}~}
+\newcommand\CR{\textsf{CR}~}
+\newcommand\Node{\textsf{Node}~}
+\newcommand\Leaf{\textsf{Leaf}~}
+\newcommand\Tree{\textsf{Tree}~}
+\newcommand\NoLeaf{\textsf{NoLeaf}~}
+\newcommand\ifLeaf{\textsf{ifLeaf}~}
+\newcommand\Then{~\textsf{then}~} % Uso mayúsculas para then y else porque en
+\newcommand\Else{~\textsf{else}~} % minúsculas son palabras claves de LaTeX
+
+
+\title{Entrega 6}
+\author{Martin Alejandro Melo}
+\date{\today}
+
+
+\begin{document}
+\maketitle  
+	
+	
+
+\[
+   (\fun x.x+x) ((\fun y.y)3)
+\]
+\textsl{CBN}\\
+\begin{align*}
+\infer{\Gamma(\fun x.x+x) ((\fun y.y)3) \hookrightarrow 6}
+	{
+		\infer{\Gamma\vdash \fun x.x+x \hookrightarrow <x,x+x,\varnothing>}{} 
+		&
+		\infer{x=<((\fun y.y)3),\Gamma>\vdash x+x \hookrightarrow 6}
+		{
+			\infer{x=<((\fun y.y)3),\Gamma> \vdash x \hookrightarrow 3}
+			{
+				\infer{\vdash(\fun y.y) 3 \hookrightarrow 3}
+				{
+					\infer{\vdash \fun y.y \hookrightarrow <y,y,\varnothing>}{}
+					& 
+					\infer{y=<3,\varnothing>\vdash 3 \hookrightarrow 3}
+					{
+						\infer{\vdash 3 \hookrightarrow 3}{}
+					}
+				}
+			}
+			&
+			\infer{x=<((\fun y.y)3),\Gamma> \vdash x \hookrightarrow 3}
+			{
+				\infer{\vdash(\fun y.y) 3 \hookrightarrow 3}
+				{
+					\infer{\vdash \fun y.y \hookrightarrow <y,y,\varnothing>}{}
+					& 
+					\infer{y=<3,\varnothing>\vdash 3 \hookrightarrow 3}
+					{
+						\infer{\vdash 3 \hookrightarrow 3}{}
+					}
+				}
+			}
+		}
+	}
+\end{align*}
+
+\textsl{CBV}\\
+\begin{align*}
+\infer{\Gamma(\fun x.x+x) ((\fun y.y)3) \hookrightarrow 6}
+	{
+		\infer{\Gamma\vdash \fun x.x+x \hookrightarrow <x,x+x,\varnothing>}{} 
+		&
+		\infer{x=3\vdash x+x \hookrightarrow 6}
+		{
+			\infer{x=3\vdash x \hookrightarrow 3}
+			{
+				\infer{\vdash 3 \hookrightarrow 3}{}
+			}
+			&
+			\infer{x=3\vdash x \hookrightarrow 3}
+			{
+				\infer{\vdash 3 \hookrightarrow 3}{}
+			}
+		} 
+		&
+		\infer{\Gamma\vdash(\fun y.y) 3 \hookrightarrow 3}
+				{
+					\infer{\Gamma\vdash \fun y.y \hookrightarrow <y,y,\varnothing>}{}
+					& 
+					\infer{y=<3,\varnothing>\vdash y \hookrightarrow 3}
+					{
+						\infer{\vdash 3 \hookrightarrow 3}{}
+					}
+				}
+	}
+\end{align*}
+
+	\end{document}

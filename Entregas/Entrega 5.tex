@@ -1,0 +1,71 @@
+\documentclass[a4paper,10pt]{article} % a4paper es obvio y 10pt es el tamaño
+                                      % de la tipografía básica
+\usepackage[utf8]{inputenc} % Permite escribir acentos (leer este archivo en 
+                            % UTF8!)
+\usepackage[T1]{fontenc}    % Permite que el texto que se produce se pueda
+                            % copiar (incluídos los símbolos)
+\usepackage[spanish]{babel} % Hace que las palabras claves (como la fecha)
+                            % salgan en español
+\usepackage{fullpage}       % Pone márgenes más chicos que los estándares
+
+\setlength\parindent{0em}   % Elimina la identación
+
+\usepackage{amsmath,amssymb,graphicx}        
+
+\usepackage{proof}        % Para escribir el infer y hacer la linea para la definicion inductiva*
+
+\newcommand\fun{\textsf{fun}~}  % Una especie de macro para usar \fun
+\newcommand\fix{\textsf{fix}~}
+\newcommand\Let{\textsf{Let}~}
+\newcommand\In{\textsf{in}~}
+\newcommand\ifZ{\textsf{ifZ}~}
+\newcommand\Nat{\textsf{Nat}~}
+\newcommand\CL{\textsf{CL}~}
+\newcommand\CR{\textsf{CR}~}
+\newcommand\Node{\textsf{Node}~}
+\newcommand\Leaf{\textsf{Leaf}~}
+\newcommand\Tree{\textsf{Tree}~}
+\newcommand\NoLeaf{\textsf{NoLeaf}~}
+\newcommand\ifLeaf{\textsf{ifLeaf}~}
+\newcommand\Then{~\textsf{then}~} % Uso mayúsculas para then y else porque en
+\newcommand\Else{~\textsf{else}~} % minúsculas son palabras claves de LaTeX
+
+
+\title{Entrega 5}
+\author{Martin Alejandro Melo}
+\date{\today}
+
+
+\begin{document}
+\maketitle  
+	
+	
+
+\[
+   (\fun x.\fun y.(1+x)+4) ((\fun z.z*z)2)
+\]
+
+
+\begin{align*}
+  \textsl{CBV fuerte y debil}\\
+  & (\fun x.\fun y.(1+x)+4) ((\fun z.z*z)2)\\
+  & \to (\fun x.\fun y.(1+x)+4) (2*2)\\
+  & \to (\fun x.\fun y.(1+x)+4) 4\\
+  & \to \fun y.(1+4)+4\\
+  & \to \fun y.~5+4\\
+  & \to \fun y.~9\\
+  & \to\fbox{9}\\	
+\end{align*}
+\begin{align*}
+	\textsl{CBN fuerte y debil}\\
+  & (\fun x.\fun y.(1+x)+4) ((\fun z.z*z)2)\\
+  & \to \fun y.(1+((\fun z.z*z)2))+4\\
+  & \to (1+((\fun z.z*z)2))+4\\
+  & \to (1+(2*2))+4\\
+  & \to (1+4)+4\\
+  & \to 5+4\\
+  & \to\fbox{9}\\
+\end{align*}
+	
+
+	\end{document}
