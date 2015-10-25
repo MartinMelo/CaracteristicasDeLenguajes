@@ -1,0 +1,158 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{fullpage}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\parindent 0pt
+\usepackage{proof}        % Para escribir el infer y hacer la linea para la definicion inductiva*
+\usepackage{amsmath,amssymb,graphicx}
+\newcommand\fun{\textsf{fun}~}  % Una especie de macro para usar \fun
+\newcommand\fix{\textsf{fix}~}
+\newcommand\Let{\textsf{Let}~}
+\newcommand\In{\textsf{in}~}
+\newcommand\ifZ{\textsf{ifZ}~}
+\newcommand\Nat{\textsf{Nat}~}
+\newcommand\CL{\textsf{CL}~}
+\newcommand\CR{\textsf{CR}~}
+\newcommand\Node{\textsf{Node}~}
+\newcommand\Leaf{\textsf{Leaf}~}
+\newcommand\Tree{\textsf{Tree}~}
+\newcommand\NoLeaf{\textsf{NoLeaf}~}
+\newcommand\ifLeaf{\textsf{ifLeaf}~}
+\newcommand\Then{~\textsf{then}~} % Uso mayúsculas para then y else porque en
+\newcommand\Else{~\textsf{else}~} % minúsculas son palabras claves de LaTeX
+ 
+\title{Sections and Chapters}
+\author{Gubert Farnsworth}
+\date{\today}
+ 
+\begin{document}
+\maketitle
+ 
+\section{Rehacer las entregas}
+
+\subsection{Entrega 1}
+
+\subsection{Entrega 2}
+
+\subsection{Entrega 3}
+
+\subsection{Entrega 4}
+
+\subsection{Entrega 5}
+
+\[
+   (\fun x.\fun y.(1+x)+4) ((\fun z.z*z)2)
+\]
+
+
+\section*{CBV fuerte y debil}
+\begin{align}
+  (\fun x.\fun y.(1+x)+4) ((\fun z.z*z)2)
+  & \to (\fun x.\fun y.(1+x)+4) (2*2)    \nonumber\\
+  & \to (\fun x.\fun y.(1+x)+4) 4	 \nonumber\\
+  & \to \fun y.(1+4)+4			 \label{fin-debil}\\
+  & \to \fun y.~5+4			 \nonumber\\
+  & \to \fun y.~9			 \label{fin-fuerte}\\
+  & \to\fbox{9}				 \label{imposible}
+\end{align}
+El debil termina en el paso \eqref{fin-debil}. El fuerte termina en el \eqref{fin-fuerte}.
+
+\section*{CBN fuerte y debil}
+\begin{align}
+  (\fun x.\fun y.(1+x)+4) ((\fun z.z*z)2)	\label{fin-debil2}
+  & \to (\fun x.\fun y.(1+x)+4) (2*2)    \nonumber\\
+  & \to (\fun x.\fun y.(1+x)+4) 4	 \nonumber\\
+  & \to \fun y.(1+4)+4			 \nonumber\\
+  & \to \fun y.~5+4			 \nonumber\\
+  & \to \fun y.~9			 \label{fin-fuerte2}\\
+  & \to\fbox{9}				 
+\end{align}
+El debil termina en el paso \eqref{fin-debil2}. El fuerte termina en el \eqref{fin-fuerte2}.
+
+
+\subsection{Entrega 6}
+
+\[
+   (\fun x.x+x) ((\fun y.y)3)
+\]
+\textsl{CBN}\\
+\begin{align*}
+\scalebox{0.7}[0.7]{
+			\infer{\vdash(\fun x.x+x) ((\fun y.y)3) \hookrightarrow 6}
+				{
+					\infer{\vdash \fun x.x+x \hookrightarrow <x,x+x,\varnothing>}{} 
+					&
+					\infer{x=<((\fun y.y)3),\varnothing>\vdash x+x \hookrightarrow 6}
+					{
+						\infer{x=<((\fun y.y)3),\varnothing> \vdash x \hookrightarrow 3}
+						{
+							\infer{\vdash(\fun y.y) 3 \hookrightarrow 3}
+							{
+								\infer{\vdash \fun y.y \hookrightarrow <y,y,\varnothing>}{}
+								& 
+								\infer{y=<3,\varnothing>\vdash 3 \hookrightarrow 3}
+								{
+									\infer{\vdash 3 \hookrightarrow 3}{}
+								}
+							}
+						}
+						&
+						\infer{x=<((\fun y.y)3),\varnothing> \vdash x \hookrightarrow 3}
+						{
+							\infer{\vdash(\fun y.y) 3 \hookrightarrow 3}
+							{
+								\infer{\vdash \fun y.y \hookrightarrow <y,y,\varnothing>}{}
+								& 
+								\infer{y=<3,\varnothing>\vdash 3 \hookrightarrow 3}
+								{
+									\infer{\vdash 3 \hookrightarrow 3}{}
+								}
+							}
+						}
+					}
+				}
+		}
+\end{align*}
+
+
+\subsection{Entrega 7}
+
+Agregar la multiplicacion al compilador.
+
+Con lo cual a la definicion que ya teniamos agregariamos la operacion "mul" que multiplica el primero de la pila con el acumulador borrando el primero de la pila y poniendo el resultado en el acumulador.
+
+La secuencia para $ (1+2)*3+1 $ seria la siguiente: ldi 1;push;ldi 2; add; push; ldi 3; mul; push; ldi 1; add;
+
+
+
+\section{Responder las siguientes preguntas:}
+
+2)
+Que un lenguaje no sea tipado quiere decir que al momento de escribir el codigo no es necesario dar el tipo
+de datos que se utiliza en las funciones, parametros, definiciones de variables.
+Por ejemplo en Javascript las variables se pueden definir como "var nombre= dato" sin dar el tipo de la variable.
+Si bien el lenguaje es no tipado, no quiere decir que posea inferencia de tipos.
+
+3) La inferencia de tipo es la capacidad que permite al programador obviar la definicion del tipo de las funciones, declaraciones y/o variables.
+ Ya que el sistema de inferencia de tipos los asigna "Automaticamente" al momento de interpretarlo o compilarlo.
+Esta capacidad la poseen principal los lenguajes con chequeo estatico de tipos.
+Los lenguajes mas conocidos con inferencia de tipos son Hakell, OCaml y Scala.
+
+4)
+
+5)Una estrategia de evaluacion determinado cuando evaluar los argumentos de la llamada de una funcion. Tambien determina el tipo del valor que le pasa. Todos los lenguajes de programacion utilizan una estrategia de evaluacion. Las principales estrategias son:
+Call by value: Esta estrategia primero evalua los argumentos y luego evalua la funcion.
+Call by name:  Esta estrategia primero evalua la funcion y luego cuando sea necesario evalua los argumentos.
+
+Ambas tienen sus ventajas y sus desventajas.
+
+6)Un interprete realiza la "traducion" a codigo maquina en tiempo de ejecucion, instruccion por instruccion. Esto permite que tanto el debuging del programa interpretado, la programacion y distribucion del programa sea mas flexible. Esta ultima caracteristica se da ya que al ser interpretado lo unico que se necesita
+es un interprete especifico para cada plataforma.
+
+7) Un compilador transforma el codigo escrito al codigo maquina previo a la ejecucion. Existen muchos tipos de compiladores, sus diferencias estan en 
+las etapas de compilacion, el resultado final, etc. A su vez un compilador puede formar parte de un interprete.
+
+8)Una maquina virtual interpreta un tipo de codigo especifico para el que este destinada y ejecuta sus instrucciones, su mayor ventaja es que permite la portabilidad del programa escrito, ya que el codigo esta destinado a que la maquina virtual lo entienda y no la plataforma donde esta corriendo. Con lo cual el programar se asegura que se va a obtener el mismo resultado/comportamiento en las disintas plataformas(hardware/software). Las maquinas virtuales mas conocidas son la de Java, Javascript,Smalltalks, Scala.
+
+\end{document}
