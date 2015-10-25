@@ -22,8 +22,8 @@
 \newcommand\Then{~\textsf{then}~} % Uso mayúsculas para then y else porque en
 \newcommand\Else{~\textsf{else}~} % minúsculas son palabras claves de LaTeX
  
-\title{Sections and Chapters}
-\author{Gubert Farnsworth}
+\title{Trabajo Practico \\ Lenguajes segun sus caracteristicas}
+\author{Martion Alejandro Melo}
 \date{\today}
  
 \begin{document}
@@ -48,27 +48,25 @@
 
 \section*{CBV fuerte y debil}
 \begin{align}
-  (\fun x.\fun y.(1+x)+4) ((\fun z.z*z)2)
+  (\fun x.\fun y.(1+x)+4) ((\fun z.z*z)2) 
   & \to (\fun x.\fun y.(1+x)+4) (2*2)    \nonumber\\
   & \to (\fun x.\fun y.(1+x)+4) 4	 \nonumber\\
-  & \to \fun y.(1+4)+4			 \label{fin-debil}\\
+  & \to \fun y.(1+4)+4			 ~\textsl{fin debil}\nonumber\\
   & \to \fun y.~5+4			 \nonumber\\
-  & \to \fun y.~9			 \label{fin-fuerte}\\
-  & \to\fbox{9}				 \label{imposible}
+  & \to \fun y.~9			 ~\textsl{fin fuerte} \nonumber 
 \end{align}
-El debil termina en el paso \eqref{fin-debil}. El fuerte termina en el \eqref{fin-fuerte}.
+
 
 \section*{CBN fuerte y debil}
 \begin{align}
-  (\fun x.\fun y.(1+x)+4) ((\fun z.z*z)2)	\label{fin-debil2}
-  & \to (\fun x.\fun y.(1+x)+4) (2*2)    \nonumber\\
-  & \to (\fun x.\fun y.(1+x)+4) 4	 \nonumber\\
-  & \to \fun y.(1+4)+4			 \nonumber\\
-  & \to \fun y.~5+4			 \nonumber\\
-  & \to \fun y.~9			 \label{fin-fuerte2}\\
-  & \to\fbox{9}				 
+  (\fun x.\fun y.(1+x)+4) ((\fun z.z*z)2)	
+  & \to \fun y.(1+((\fun z.z*z)2))+4     ~\textsl{fin debil}\nonumber\\
+  & \to \fun y.(1+(2*2))+4  \nonumber\\
+  & \to \fun y.(1+4)+4			  \nonumber\\
+  & \to \fun y.~5+4			  \nonumber\\
+  & \to \fun y.~9			 ~\textsl{fin fuerte} \nonumber				 
 \end{align}
-El debil termina en el paso \eqref{fin-debil2}. El fuerte termina en el \eqref{fin-fuerte2}.
+
 
 
 \subsection{Entrega 6}
