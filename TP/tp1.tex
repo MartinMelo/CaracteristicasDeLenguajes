@@ -34,11 +34,161 @@
 \subsection{Entrega 1}
 
 \subsection{Entrega 2}
+\textsl{Extender PCF para disponer de Arboles Binarios} \\
 
+	\textbf{Sintaxis de Tipos: } \\
+	
+	  $ A = \Nat | A\Rightarrow A | A\wedge A | \Tree A | \NoLeaf A $\\
+	
+	\textbf{Sintaxis de terminos:  } \\
+	 
+	$ t = ... | Leaf~t | Tree~t~t~t | ifLeaf~t\Then t\Else t | CL~t | CR~t | Node~t $ \\
+	
+	\textbf{Semantica Operacional:} \\
+	
+	$ \CL \Tree t~u~v\rightarrow u $  \\
+	$ \CR \Tree t~u~v\rightarrow v $  \\
+	$ \ifLeaf \Tree t~u~v\Then u\Else v\rightarrow v $  \\
+	$ \ifLeaf \Leaf t\Then u\Else v\rightarrow u $  \\
+	$ \Node \Tree t~u~v\rightarrow t $  \\
+	$ \Node \Leaf t\rightarrow t $  \\
+	
+	
+	\textbf{Relacion definida inductivamente:} \\
+	
+	\infer{\Gamma \vdash t : \Tree A}{\Gamma \vdash t : \NoLeaf A}
+	\vspace{5mm}
+	\infer{\Gamma \vdash \Leaf t : \Tree A}{\Gamma \vdash t : A}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \CL t: \Tree A }{\Gamma \vdash t : \NoLeaf}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \CR t: \Tree A }{\Gamma \vdash t : \NoLeaf}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \Node t: A }{\Gamma \vdash t : \Tree A}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \Tree t~r~l: \NoLeaf A }
+				{ \Gamma \vdash l : \Tree A 
+				& \Gamma \vdash r : \Tree A
+				& \Gamma \vdash t : A
+				}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \ifLeaf t~r~l: B }
+				{ \Gamma \vdash l : B
+				& \Gamma \vdash r : B
+				& \Gamma \vdash t : \Tree A
+				}
+				
 \subsection{Entrega 3}
 
-\subsection{Entrega 4}
+\textsl{Extender Algoritmo de Hindley y Robinson para Arboles Binarios y derivar el tipo para el siguiente termino:} \\
+	
+	
+	\text{\CL ( (\fun x.x) (\Leaf 2))} \\
+	
+	
+	\textbf{Para Hindley:} \\
+	
+	
+	\infer{\Gamma \vdash \Leaf t \leadsto A \rightarrow \Tree A,\phi  }{\Gamma \vdash t \leadsto A,\phi }
+	\vspace{5mm}
+	\infer{\Gamma \vdash \CL t \leadsto Tree A \rightarrow \Tree A,\Theta  }{\Gamma \vdash t \leadsto \NoLeaf A,\Theta }
+	\vspace{5mm}
+	\infer{\Gamma \vdash \CR t \leadsto Tree A \rightarrow \Tree A,\Theta  }{\Gamma \vdash t \leadsto \NoLeaf A,\Theta }
+	\vspace{5mm}
 
+	
+	\textbf{Para Robinson:} \\
+	(1) Cada vez que aparece Tree A => NoLeaf A, Dar error. \\
+	(2) Cada vez que aparece NoLeaf A, Se puede reemplazar por Tree A. \\
+	
+\subsection{Entrega 4}
+	\textbf{Derivar tipo con Hindley y Robinson a: Node ((fun x.leaf x) (fun y.y)).}
+	\vspace{5mm}
+	
+	\infer{\Gamma \vdash \Node ((\fun x.\Leaf x) (\fun y.y)) \leadsto C, \{B\Rightarrow \Tree B = (A\Rightarrow A)\Rightarrow X , X= \Tree C \} }
+		{	
+			\infer{\Gamma \vdash (\fun x.\Leaf x) (\fun y.y)\leadsto X, \{B\Rightarrow \Tree B = (A\Rightarrow A)\Rightarrow X\}}
+			{
+			 \infer{\Gamma \vdash \fun x.\Leaf x \leadsto B \Rightarrow \Tree B, \emptyset}
+				{
+					\infer{x:B\vdash x \leadsto B, \emptyset}{}
+				}
+				& 
+				\infer{\Gamma \vdash \fun y.y \leadsto A\Rightarrow A, \emptyset}
+				{
+					\infer{y:A\vdash y \leadsto A, \emptyset}{}
+				}
+			}	
+		}
+		\vspace{5mm}
+		
+		\textbf{Robinson}
+		
+		 
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ B\Rightarrow \Tree B = (A\Rightarrow A)\Rightarrow X $ }\\
+					\mbox{X= \Tree C}
+				\end{array}
+		\right. \] 		
+		$ \Rightarrow	(1)$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ B = (A\Rightarrow A) $ }\\
+					\mbox{ $ \Tree B = X $ }\\
+					\mbox{X= \Tree C}
+				\end{array}
+		\right. \]
+		$ \Rightarrow	(1)$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ B = (A\Rightarrow A) $ }\\
+					\mbox{ $ \Tree B = \Tree B $ }\\
+					\mbox{ $ \Tree B = \Tree C $}
+				\end{array}
+		\right. \]
+		$ \Rightarrow	(4)$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ B = (A\Rightarrow A) $ }\\
+					\mbox{ $ \Tree B = \Tree C $}\\
+					\mbox{ $ B = C $}
+				\end{array}
+		\right. \]
+		$ \Rightarrow	(1)$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ (A\Rightarrow A) = (A\Rightarrow A) $ }\\
+					\mbox{ $ \Tree (A\Rightarrow A) = \Tree C $}\\
+					\mbox{ $ (A\Rightarrow A) = C $}
+				\end{array}
+		\right. \]
+		
+		$ S = [(A\Rightarrow A)/C] $ \\
+		El tipo es: $ (A\Rightarrow A) $
+		\vspace{5mm}	
+		
+	\textbf{Derivar tipos con polimorfismo a: Fun X.Let y=x in y y. }
+	\vspace{5mm}
+	
+	\[
+  \infer{\vdash\fun x.\Let y=x\In yy:[B\Rightarrow(A\Rightarrow A)]}
+  {
+    \infer{x:[B]\vdash\Let y=x\In yy:[A\Rightarrow A]}
+    {
+      \infer{x:[B]\vdash x:[B]}{}
+      &
+      \infer{x:[B],y:[B]\vdash yy:[A\Rightarrow A]}
+      {
+	\infer{x:[B],y:[B]\vdash y:[B\Rightarrow(A\Rightarrow A)]}{}
+	&
+	\infer{x:[B],y:[B]\vdash y:[B]}{}
+      }
+    }
+  }
+\]
+	
+	
 \subsection{Entrega 5}
 
 \[
