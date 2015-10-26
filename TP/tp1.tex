@@ -3,6 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
+\usepackage{enumerate}
 \parindent 0pt
 \usepackage{proof}        % Para escribir el infer y hacer la linea para la definicion inductiva*
 \usepackage{amsmath,amssymb,graphicx}
@@ -32,7 +33,15 @@
 \section{Rehacer las entregas}
 
 \subsection{Entrega 1}
-
+\textsl{Definir Free Variables(FV)} \\
+$ FV(x) = {x} \\
+FV(t~u) = FV(t) \cup FV(u) \\
+FV(t \otimes u) = FV(t) \cup FV(u) \\
+FV(\fun x:t) = FV(t) \backslash {x} \\
+FV(\fix x:t) = FV(t) \backslash {x} \\
+FV(\Let x = t~ \In u) = FV(t) \cup (FV(u) \backslash {x}) \\
+FV(\ifZ t \Then u \Else v) = FV(t) \cup FV(u) \cup FV(v)
+$
 \subsection{Entrega 2}
 \textsl{Extender PCF para disponer de Arboles Binarios} \\
 
@@ -80,27 +89,91 @@
 				
 \subsection{Entrega 3}
 
-\textsl{Extender Algoritmo de Hindley y Robinson para Arboles Binarios y derivar el tipo para el siguiente termino:} \\
-	
-	
-	\text{\CL ( (\fun x.x) (\Leaf 2))} \\
-	
+\textsl{Extender Algoritmo de Hindley y Robinson para Arboles Binarios y derivar el tipo para el termino:} \\
 	
 	\textbf{Para Hindley:} \\
 	
-	
-	\infer{\Gamma \vdash \Leaf t \leadsto A \rightarrow \Tree A,\phi  }{\Gamma \vdash t \leadsto A,\phi }
+	\infer{\Gamma \vdash \Leaf t \leadsto A \rightarrow \Tree A,\tau  }{\Gamma \vdash t \leadsto A,\tau }
 	\vspace{5mm}
-	\infer{\Gamma \vdash \CL t \leadsto Tree A \rightarrow \Tree A,\Theta  }{\Gamma \vdash t \leadsto \NoLeaf A,\Theta }
+	\infer{\Gamma \vdash \CL t \leadsto \Tree B ,\tau \cup \{ A = \NoLeaf B \}  }{\Gamma \vdash t \leadsto A,\tau }
 	\vspace{5mm}
-	\infer{\Gamma \vdash \CR t \leadsto Tree A \rightarrow \Tree A,\Theta  }{\Gamma \vdash t \leadsto \NoLeaf A,\Theta }
+	\infer{\Gamma \vdash \CR t \leadsto \Tree B ,\tau \cup \{ A = \NoLeaf B \}  }{\Gamma \vdash t \leadsto A,\tau }
 	\vspace{5mm}
+	\infer{\Gamma \vdash \Node t \leadsto B,\tau \cup \{ A = \Tree B \} }{\Gamma \vdash t \leadsto A,\tau}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \Tree t~u~v \leadsto \NoLeaf A,\tau \cup \beta \cup \alpha \cup \{ B= \Tree A, C = \Tree A \} }
+				{ 
+						\Gamma \vdash t \leadsto A,\tau
+					& \Gamma \vdash u \leadsto B,\beta
+					& \Gamma \vdash v \leadsto C,\alpha
+				}
+	\vspace{5mm} 
+	\infer{\Gamma \vdash \ifLeaf t~\Then u~\Else v \leadsto B,\tau \cup \beta \cup \alpha \cup \{ B=C,  A = \Tree X \}  }
+				{ \Gamma \vdash t \leadsto \Tree A,\tau
+				& \Gamma \vdash u \leadsto B,\beta
+				& \Gamma \vdash v \leadsto B,\alpha
+				}
+	\pagebreak
 
 	
 	\textbf{Para Robinson:} \\
-	(1) Cada vez que aparece Tree A => NoLeaf A, Dar error. \\
-	(2) Cada vez que aparece NoLeaf A, Se puede reemplazar por Tree A. \\
+	(1) $(A \Rightarrow B = C \Rightarrow D) \Rightarrow A = C ~y~ B = D.$ \\
+			$\Tree A = \Tree B \Rightarrow A=B .$ \\
+			$\NoLeaf A = \NoLeaf B \Rightarrow A=B. $\\	
+	(3)	Se agrega que reglas del tipo $ \Tree A = B \Rightarrow C ~y~ \NoLeaf A = B \Rightarrow C$ daran error.
 	
+	\text{Derivar el termino: \CL ( (\fun x.x) (\Leaf 2))} \\
+	\infer{\CL ( (\fun x.x) (\Leaf 2)) \leadsto \Tree B, \{A\Rightarrow A = \Tree \Nat \Rightarrow X, X = \NoLeaf B \} }
+				{
+					\infer{ \vdash (\fun x.x) (\Leaf 2) \leadsto X, \{A\Rightarrow A = \Tree \Nat \Rightarrow X\} }
+					{
+						\infer{ \vdash \fun x.x \leadsto A\Rightarrow A,\emptyset }
+						{
+							\infer{\Gamma x:A\vdash x \leadsto A, \emptyset}{}
+						}
+						&
+						\infer{ \vdash \Leaf 2 \leadsto \Tree \Nat,\emptyset }
+						{
+							\infer{\vdash 2 \leadsto \Nat, \emptyset}{}
+						}
+					} 
+				}
+			\vspace{5mm}
+		
+		\textbf{Robinson}
+		
+		 
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ A\Rightarrow A = \Tree \Nat \Rightarrow X $ }\\
+					\mbox{ $ X= \NoLeaf B $ }
+				\end{array}
+		\right. \] 		
+		$ \Rightarrow	(1)$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ A = \Tree \Nat) $ }\\
+					\mbox{ $ A = X $ }\\
+					\mbox{ $ X = \NoLeaf B $ }
+				\end{array}
+		\right. \]
+		$ \Rightarrow	$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $ \Tree \Nat = \Tree \Nat $ }\\
+					\mbox{ $ \Tree A = \NoLeaf B $ }\\
+					\mbox{ $ \NoLeaf B = \NoLeaf B $}
+				\end{array}
+		\right. \]
+		$ \Rightarrow	$
+		\[ \left\{ 
+		\begin{array}{ll}
+					\mbox{ $\Tree A = \NoLeaf B $ }
+				\end{array}
+		\right. \]
+		
+		ERROR en el ultimo paso $\Tree A \neq \NoLeaf B $
+\pagebreak
 \subsection{Entrega 4}
 	\textbf{Derivar tipo con Hindley y Robinson a: Node ((fun x.leaf x) (fun y.y)).}
 	\vspace{5mm}
@@ -188,7 +261,7 @@
   }
 \]
 	
-	
+\pagebreak
 \subsection{Entrega 5}
 
 \[
@@ -275,32 +348,34 @@ La secuencia para $ (1+2)*3+1 $ seria la siguiente: ldi 1;push;ldi 2; add; push;
 
 
 \section{Responder las siguientes preguntas:}
+	\begin{enumerate}
+	\item Los tipos permiten verficar que un programa sea correcto, esto se lleva a cabo analizando las operaciones y validandolas bajo un conjunto de reglas. Dependiendo del tipo de lenguaje se podran detectar errores de tipos podran ser detectados en la etapa de compilacion, este se da en los lenguajes con tipado estatico que realizan el chequeo de tipos en la etapa de compilacion. 
 
-2)
-Que un lenguaje no sea tipado quiere decir que al momento de escribir el codigo no es necesario dar el tipo
-de datos que se utiliza en las funciones, parametros, definiciones de variables.
-Por ejemplo en Javascript las variables se pueden definir como "var nombre= dato" sin dar el tipo de la variable.
-Si bien el lenguaje es no tipado, no quiere decir que posea inferencia de tipos.
+	\item
+	Que un lenguaje no sea tipado quiere decir que al momento de escribir el codigo no es necesario dar el tipo
+	de datos que se utiliza en las funciones, parametros, definiciones de variables.
+	Por ejemplo en Javascript las variables se pueden definir como "var nombre= dato" sin dar el tipo de la variable.
+	Si bien el lenguaje es no tipado, no quiere decir que posea inferencia de tipos.
 
-3) La inferencia de tipo es la capacidad que permite al programador obviar la definicion del tipo de las funciones, declaraciones y/o variables.
- Ya que el sistema de inferencia de tipos los asigna "Automaticamente" al momento de interpretarlo o compilarlo.
-Esta capacidad la poseen principal los lenguajes con chequeo estatico de tipos.
-Los lenguajes mas conocidos con inferencia de tipos son Hakell, OCaml y Scala.
+	\item La inferencia de tipo es la capacidad que permite al programador obviar la definicion del tipo de las funciones, declaraciones y/o variables.
+	 Ya que el sistema de inferencia de tipos los asigna Automaticamente al momento de interpretarlo o compilarlo.
+	Esta capacidad la poseen principal los lenguajes con chequeo estatico de tipos.
+	Los lenguajes mas conocidos con inferencia de tipos son Hakell, OCaml y Scala.
 
-4)
+	\item El polimorfismo de tipos permite a un lenguaje poder dar la misma interfaz a elementos de distintos tipos. Existen varios tipos de polimorfismo, entre ellos se encuentra el polimorfismo parametrico el cual provee la capacidad a una funcion de recibir por parametro valores de distinto tipos. Por ejemplo una funcion que sume numeros enteros o reales. Tambien se encuentra el polimorfismo ad hoc que permite definir muchas veces la misma funcion para distintos tipos.
 
-5)Una estrategia de evaluacion determinado cuando evaluar los argumentos de la llamada de una funcion. Tambien determina el tipo del valor que le pasa. Todos los lenguajes de programacion utilizan una estrategia de evaluacion. Las principales estrategias son:
-Call by value: Esta estrategia primero evalua los argumentos y luego evalua la funcion.
-Call by name:  Esta estrategia primero evalua la funcion y luego cuando sea necesario evalua los argumentos.
+	\item Una estrategia de evaluacion determinado cuando evaluar los argumentos de la llamada de una funcion. Tambien determina el tipo del valor que le pasa. Todos los lenguajes de programacion utilizan una estrategia de evaluacion. Las principales estrategias son:
+	Call by value: Esta estrategia primero evalua los argumentos y luego evalua la funcion.
+	Call by name:  Esta estrategia primero evalua la funcion y luego cuando sea necesario evalua los argumentos.
 
-Ambas tienen sus ventajas y sus desventajas.
+	Ambas tienen sus ventajas y sus desventajas.
 
-6)Un interprete realiza la "traducion" a codigo maquina en tiempo de ejecucion, instruccion por instruccion. Esto permite que tanto el debuging del programa interpretado, la programacion y distribucion del programa sea mas flexible. Esta ultima caracteristica se da ya que al ser interpretado lo unico que se necesita
-es un interprete especifico para cada plataforma.
+	\item Un interprete realiza la traducion a codigo maquina en tiempo de ejecucion, instruccion por instruccion. Esto permite que tanto el debuging del programa interpretado, la programacion y distribucion del programa sea mas flexible. Esta ultima caracteristica se da ya que al ser interpretado lo unico que se necesita
+	es un interprete especifico para cada plataforma.
 
-7) Un compilador transforma el codigo escrito al codigo maquina previo a la ejecucion. Existen muchos tipos de compiladores, sus diferencias estan en 
-las etapas de compilacion, el resultado final, etc. A su vez un compilador puede formar parte de un interprete.
-
-8)Una maquina virtual interpreta un tipo de codigo especifico para el que este destinada y ejecuta sus instrucciones, su mayor ventaja es que permite la portabilidad del programa escrito, ya que el codigo esta destinado a que la maquina virtual lo entienda y no la plataforma donde esta corriendo. Con lo cual el programar se asegura que se va a obtener el mismo resultado/comportamiento en las disintas plataformas(hardware/software). Las maquinas virtuales mas conocidas son la de Java, Javascript,Smalltalks, Scala.
-
+	\item Un compilador transforma el codigo escrito al codigo maquina previo a la ejecucion. Existen muchos tipos de compiladores, sus diferencias estan en 
+	las etapas de compilacion, el resultado final, etc. A su vez un compilador puede formar parte de un interprete.
+	\pagebreak
+	\item Una maquina virtual interpreta un tipo de codigo especifico para el que este destinada y ejecuta sus instrucciones, su mayor ventaja es que permite la portabilidad del programa escrito, ya que el codigo esta destinado a que la maquina virtual lo entienda y no la plataforma donde esta corriendo. Con lo cual el programar se asegura que se va a obtener el mismo resultado/comportamiento en las disintas plataformas(hardware/software). Las maquinas virtuales mas conocidas son la de Java, Javascript,Smalltalks, Scala.
+	\end{enumerate}
 \end{document}
