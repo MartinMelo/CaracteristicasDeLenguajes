@@ -1,0 +1,78 @@
+\documentclass[10pt]{article} % a4paper es obvio y 10pt es el tamaño
+                                      % de la tipografía básica
+\usepackage[paperwidth=10in, paperheight=8.5in]{geometry}
+\usepackage[utf8]{inputenc} % Permite escribir acentos (leer este archivo en 
+                            % UTF8!)
+\usepackage[T1]{fontenc}    % Permite que el texto que se produce se pueda
+                            % copiar (incluídos los símbolos)
+\usepackage[spanish]{babel} % Hace que las palabras claves (como la fecha)
+                            % salgan en español
+\usepackage{fullpage}       % Pone márgenes más chicos que los estándares
+
+\setlength\parindent{0em}   % Elimina la identación
+
+\usepackage{amsmath,amssymb,graphicx,stmaryrd}        
+
+\usepackage{proof}        % Para escribir el infer y hacer la linea para la definicion inductiva*
+
+\newcommand\fun{\textsf{fun}~}  % Una especie de macro para usar \fun
+\newcommand\fix{\textsf{fix}~}
+\newcommand\Let{\textsf{Let}~}
+\newcommand\In{\textsf{in}~}
+\newcommand\ifZ{\textsf{ifZ}~}
+\newcommand\Nat{\textsf{Nat}~}
+\newcommand\CL{\textsf{CL}~}
+\newcommand\CR{\textsf{CR}~}
+\newcommand\Node{\textsf{Node}~}
+\newcommand\Leaf{\textsf{Leaf}~}
+\newcommand\Tree{\textsf{Tree}~}
+\newcommand\NoLeaf{\textsf{NoLeaf}~}
+\newcommand\ifLeaf{\textsf{ifLeaf}~}
+\newcommand\Then{~\textsf{then}~} % Uso mayúsculas para then y else porque en
+\newcommand\Else{~\textsf{else}~} % minúsculas son palabras claves de LaTeX
+
+
+\title{Entrega 9}
+\author{Martin Alejandro Melo}
+\date{\today}
+
+
+\begin{document}
+\maketitle  
+	
+	
+		\textbf{Extender semantica de arboles binarios.}\\\\
+		
+    $ \llbracket \Tree t~r~l \rrbracket _\Gamma = $
+			\[ \left\{ 
+			\begin{array}{ll}
+						\mbox{ $ \llbracket \Tree A \rrbracket _\Gamma ~~~~~si~~~~ \llbracket t \rrbracket _\Gamma = A ~y~ \llbracket u \rrbracket _\Gamma = \Tree A ~y~ \llbracket v \rrbracket _\Gamma = \Tree A  $}\\
+						\mbox{ $ \text{Error} ~~~~~si~~~~ \llbracket t \rrbracket _\Gamma = \text{Error} ~o~ \llbracket u \rrbracket _\Gamma = \text{Error} ~o~ \llbracket v \rrbracket _\Gamma = \text{Error}  $}\\
+						\mbox{ $ \bot _\Tree _A  ~~~~~ \text{si no se cumple lo anterior}$}
+					\end{array}
+			\right. \] 
+		\\\\
+		$ \llbracket \Leaf t \rrbracket _\Gamma = $
+			\[ \left\{ 
+			\begin{array}{ll}
+						\mbox{ $ \llbracket \Tree A \rrbracket _\Gamma ~~~~~si~~~~ \llbracket t \rrbracket _\Gamma = A $}\\
+						\mbox{ $ \text{Error}  ~~~~~si~~~~ \llbracket t \rrbracket _\Gamma = A $}\\
+						\mbox{ $ \bot _\Tree _A  ~~~~~ \text{si no se cumple lo anterior} $}
+					\end{array}
+			\right. \] 
+		\\\\
+		$ \llbracket \ifLeaf t \Then u \Else v \rrbracket _\Gamma = $
+			\[ \left\{ 
+			\begin{array}{ll}
+						\mbox{ $ \llbracket u \rrbracket _\Gamma ~~~~~si~~~~ \llbracket t \rrbracket _\Gamma = Leaf A $}\\
+						\mbox{ $ \llbracket v \rrbracket _\Gamma ~~~~~si~~~~ \llbracket t \rrbracket _\Gamma = Tree A $}
+					\end{array}
+			\right. \] 
+		\\\\
+    $ \llbracket \Node t~r~l \rrbracket _\Gamma  = \llbracket t \rrbracket _\Gamma $\\\\
+    $ \llbracket \CL t~r~l \rrbracket _\Gamma = \llbracket l \rrbracket _\Gamma $\\\\
+    $ \llbracket \CR t~r~l \rrbracket _\Gamma = \llbracket r \rrbracket _\Gamma $
+
+
+
+	\end{document}
